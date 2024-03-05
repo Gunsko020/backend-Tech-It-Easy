@@ -3,7 +3,9 @@ package com.example.model.services;
 import com.example.model.dto.TelevisionInputDto;
 import com.example.model.dto.TelevisionOutputDto;
 import com.example.model.exceptions.RecordNotFoundException;
+import com.example.model.models.RemoteController;
 import com.example.model.models.Television;
+import com.example.model.repositories.RemoteControllerRepository;
 import com.example.model.repositories.TelevisionRepository;
 
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,11 @@ public class TelevisionService {
 
     private final TelevisionRepository televisionRepository;
 
+    private final RemoteControllerRepository remoteControllerRepository;
 
-    public TelevisionService(TelevisionRepository televisionRepository) {
+    public TelevisionService(TelevisionRepository televisionRepository, RemoteControllerRepository remoteControllerRepository) {
         this.televisionRepository = televisionRepository;
+        this.remoteControllerRepository = remoteControllerRepository;
     }
 
 
@@ -140,8 +144,17 @@ public class TelevisionService {
     }
 
 
-
-
-
-
+    public void assignRemoteControllerToTelevision(Long id, Long remoteControllerId) {
+        Optional<Television> television = televisionRepository.findById(id);
+        Optional<RemoteController> remoteController = remoteControllerRepository.findById(remoteControllerId);
+        if (television.isEmpty() || remoteController.isEmpty()){
+            throw new RecordNotFoundException("Television or Remote Controller not found");
+        }
+        else {
+            Television tv = television.get();
+            RemoteController rc = remoteController.get();
+            tv.setRemoteController(rc);
+            televisionRepository.save(tv);
+        }
+    }
 }

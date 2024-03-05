@@ -28,6 +28,17 @@ public class Television {
     private Integer originalStock;
     private Integer sold;
 
+    @OneToOne
+    private RemoteController remoteController;
+
+    public RemoteController getRemoteController() {
+        return remoteController;
+    }
+
+    public void setRemoteController(RemoteController remoteController) {
+        this.remoteController = remoteController;
+    }
+
     public Long getId() {
         return id;
     }

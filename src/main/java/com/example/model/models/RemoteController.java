@@ -1,11 +1,10 @@
 package com.example.model.models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "remotecontrollers")
 public class RemoteController {
 
 
@@ -19,6 +18,10 @@ public class RemoteController {
     private String brand;
     private Double price;
     private Integer originalStock;
+
+
+    @OneToOne(mappedBy = "remoteController")
+    private Television television;
 
     public Long getId() {
         return id;
@@ -38,6 +41,14 @@ public class RemoteController {
 
     public String getBatteryType() {
         return batteryType;
+    }
+
+    public Television getTelevision() {
+        return television;
+    }
+
+    public void setTelevision(Television television) {
+        this.television = television;
     }
 
 
